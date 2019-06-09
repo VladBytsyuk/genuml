@@ -2,8 +2,8 @@
 /.gradle/
 gradle/wrapper/gradle-wrapper.properties
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
-/.idea
 /build
 /captures
+/.idea/*
+!/.idea/codeStyles/*
+!/.idea/inspectionProfiles/*
