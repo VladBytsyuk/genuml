@@ -1,5 +1,9 @@
 package com.vbytsyuk.genuml.controllers
 
 interface ISourceCodeReader {
-    fun readFile(pathToFile: String): String
+
+    /**
+     * Read a text file and returns a list of lines
+     */
+    fun readFile(pathToFile: String): List<String>
 }

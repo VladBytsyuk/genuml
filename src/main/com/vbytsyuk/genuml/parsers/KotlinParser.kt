@@ -18,10 +18,9 @@ const val ENUM_CLASS = "enum class"
 class KotlinParser(sourceCodeReader: ISourceCodeReader) : Parser(sourceCodeReader) {
     override val extension = "kt"
 
-    override fun parse(sourceCode: String): Result {
-        val lines = sourceCode.split('\n')
+    override fun parseFile(sourceCodeLines: List<String>): Result {sourceCodeLines
         val elementDeclarationLines =
-            lines.filter { it.contains("class ") || it.contains("interface ") }
+            sourceCodeLines.filter { it.contains("class ") || it.contains("interface ") }
         if (elementDeclarationLines.isEmpty()) {
             return Result.Error("File doesn't contain elements declarations")
         }

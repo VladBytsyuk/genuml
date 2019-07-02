@@ -18,7 +18,7 @@ abstract class Parser(private val sourceCodeReader: ISourceCodeReader) {
     fun parse(sourceCodes: List<String>): Result {
         val parsedSources = sourceCodes
             .map { path -> path to sourceCodeReader.readFile(path) }
-            .map { (path, sourceCode) -> path to parse(sourceCode) }
+            .map { (path, sourceCode) -> path to parseFile(sourceCode) }
             .toMap()
 
         val error = parsedSources.filterByResult<Result.Error>()
@@ -37,7 +37,7 @@ abstract class Parser(private val sourceCodeReader: ISourceCodeReader) {
         }
     }
 
-    internal abstract fun parse(sourceCode: String): Result
+    internal abstract fun parseFile(sourceCodeLines: List<String>): Result
 }
 
 
