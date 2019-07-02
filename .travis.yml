@@ -2,10 +2,10 @@ language: java
 jdk: openjdk8
 jobs:
   include:
-    - stage: detekt
-      script: ./gradlew detekt
     - stage: build
       script: ./gradlew assemble
+    - stage: detekt
+      script: ./gradlew detekt
     - stage: unit test
       script: ./gradlew test
 notifications:
