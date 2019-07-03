@@ -9,17 +9,16 @@ object ModelMerger {
         object Error : Result()
     }
 
-    fun merge(list: List<Model>): Result {
-        if (list.hasNameClashing) {
-            return Result.Error
-        }
-
-        val mergedModel = list.reduce { acc, model ->
-            acc.elements.addAll(model.elements)
-            acc.references.addAll(model.references)
-            return@reduce acc
-        }
-        return Result.Success(mergedModel)
+    fun merge(list: List<Model>): Result = when {
+        list.isEmpty() -> Result.Success(model = Model())
+        list.hasNameClashing -> Result.Error
+        else -> Result.Success(
+            model = list.reduce { acc, model ->
+                acc.elements.addAll(model.elements)
+                acc.references.addAll(model.references)
+                return@reduce acc
+            }
+        )
     }
 }
 

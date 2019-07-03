@@ -1,3 +1,3 @@
 package com.vbytsyuk.genuml
 
-const val IMPLEMENT = "implement"
+const val IMPLEMENT = ""

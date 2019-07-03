@@ -10,7 +10,7 @@ import com.vbytsyuk.genuml.usecases.addElement
 
 const val INTERFACE = "interface"
 const val CLASS = "class"
-const val FINAL_CLASS = "final class"
+const val FINAL_CLASS = "class"
 const val OPEN_CLASS = "open class"
 const val ABSTRACT_CLASS = "abstract class"
 const val ENUM_CLASS = "enum class"
@@ -22,7 +22,7 @@ class KotlinParser(sourceCodeReader: ISourceCodeReader) : Parser(sourceCodeReade
         val elementDeclarationLines =
             sourceCodeLines.filter { it.contains("class ") || it.contains("interface ") }
         if (elementDeclarationLines.isEmpty()) {
-            return Result.Error("File doesn't contain elements declarations")
+            return Result.Success(model = Model())
         }
 
         val model = Model()
