@@ -6,6 +6,7 @@ import com.vbytsyuk.genuml.domain.Model
 /** Checks that Model can be placed on a canvas without references intersections */
 val Model.isPlanar: Boolean
     get() = when {
+        n <= 2 -> true
         definitelyNotPlanar -> false
         else -> true
     }
@@ -14,6 +15,6 @@ val Model.isPlanar: Boolean
 /** Euler criteria */
 @Suppress("MagicNumber")
 private val Model.canBePlanar: Boolean
-    get() = m < 3 * n - 6
+    get() = n <= 2 || m < 3 * n - 6
 
 private val Model.definitelyNotPlanar: Boolean get() = !canBePlanar
