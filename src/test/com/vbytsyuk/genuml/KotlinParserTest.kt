@@ -17,6 +17,7 @@ class KotlinParserTest {
         const val EMPTY_FILE = "$DIRECTORY/Empty.kt"
         const val ONE_INTERFACE = "$DIRECTORY/Factory.kt"
         const val ONE_FINAL_CLASS = "$DIRECTORY/Single.kt"
+        const val ONE_OPEN_CLASS = "$DIRECTORY/Store.kt"
     }
 
     private fun test(paths: List<String>, block: (Parser.Result) -> Unit) {
@@ -58,8 +59,13 @@ class KotlinParserTest {
     }
 
     @Test
-    fun `1 source file, 1 open class`() {
-        //TODO: implement
+    fun `1 source file, 1 open class`() = test(paths = listOf(ONE_OPEN_CLASS)) { result ->
+        val actualModel = (result as Parser.Result.Success).model
+        assertEquals(actual = actualModel.references.size, expected = 0)
+        assertEquals(actual = actualModel.elements.size, expected = 1)
+        val element = actualModel.elements.first()
+        assertEquals(actual = element.name, expected = "Store")
+        assertEquals(actual = element.type, expected = Element.Type.OPEN_CLASS)
     }
 
     @Test
