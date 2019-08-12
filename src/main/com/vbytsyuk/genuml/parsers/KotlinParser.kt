@@ -39,14 +39,14 @@ class KotlinParser(sourceCodeReader: ISourceCodeReader) : Parser(sourceCodeReade
         get() = when {
             contains(INTERFACE) -> Element.Type.INTERFACE to getWordAfter(word = INTERFACE)
             contains(OPEN_CLASS) -> Element.Type.OPEN_CLASS to getWordAfter(word = CLASS)
-            contains(FINAL_CLASS) -> Element.Type.FINAL_CLASS to getWordAfter(word = CLASS)
             contains(ABSTRACT_CLASS) -> Element.Type.ABSTRACT_CLASS to getWordAfter(word = CLASS)
             contains(ENUM_CLASS) -> Element.Type.ENUM_CLASS to getWordAfter(word = CLASS)
+            contains(FINAL_CLASS) -> Element.Type.FINAL_CLASS to getWordAfter(word = CLASS)
             else -> null
         }
 
     private fun String.getWordAfter(word: String): String {
-        val words = split(" ")
+        val words = split(Regex("([ ]|[(])"))
         val wordIndex = words.indexOf(word)
         return when {
             wordIndex + 1 in 0 until words.size -> words[wordIndex + 1]
