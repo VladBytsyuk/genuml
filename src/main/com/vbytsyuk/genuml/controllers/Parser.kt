@@ -9,7 +9,7 @@ abstract class Parser(private val sourceCodeReader: ISourceCodeReader) {
     sealed class Result {
         data class Success(val model: Model) : Result()
         data class Error(val message: String) : Result()
-        object WrongExtension : Result()
+        internal object WrongExtension : Result()
     }
 
 
