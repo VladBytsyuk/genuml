@@ -19,7 +19,11 @@ abstract class Parser(private val sourceCodeReader: ISourceCodeReader) {
         val parsedSources = paths
             .map { path -> path to sourceCodeReader.readFile(path) }
             .map { (path, sourceCode) ->
-                path to (if (path.endsWith(extension)) parseFile(sourceCode) else Result.WrongExtension)
+                val fileParsingResult = when {
+                    path.endsWith(extension) -> parseFile(sourceCode)
+                    else -> Result.WrongExtension
+                }
+                path to fileParsingResult
             }
             .toMap()
 
