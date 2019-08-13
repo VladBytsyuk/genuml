@@ -18,13 +18,7 @@ abstract class Parser(private val sourceCodeReader: ISourceCodeReader) {
     fun parse(paths: List<String>): Result {
         val parsedSources = paths
             .map { path -> path to sourceCodeReader.readFile(path) }
-            .map { (path, sourceCode) ->
-                val fileParsingResult = when {
-                    path.endsWith(extension) -> parseFile(sourceCode)
-                    else -> Result.WrongExtension
-                }
-                path to fileParsingResult
-            }
+            .map { (path, sourceCode) -> path to parse(sourceCode, path) }
             .toMap()
 
         val error = parsedSources.filterByResult<Result.Error>()
@@ -35,15 +29,15 @@ abstract class Parser(private val sourceCodeReader: ISourceCodeReader) {
             return Result.Error("Can't parse sources: $errorPaths")
         }
 
-        val parsedModels = success.mapToResults().map { successResult -> successResult.model }
-
-        return when (val modelMergerResult = ModelMerger.merge(parsedModels)) {
-            is ModelMerger.Result.Success -> Result.Success(modelMergerResult.model)
-            ModelMerger.Result.Error -> Result.Error("Source files have name clashing. Incorrect source code.")
-        }
+        return success.mapToResults().mapToModel().merge()
     }
 
     internal abstract fun parseFile(sourceCodeLines: List<String>): Result
+
+    private fun parse(sourceCode: List<String>, path: String): Result = when {
+        path.endsWith(extension) -> parseFile(sourceCode)
+        else -> Result.WrongExtension
+    }
 }
 
 
@@ -60,3 +54,11 @@ private inline fun <reified R : Parser.Result> Map<String, R>.mapToPaths() =
 
 private inline fun <reified R : Parser.Result> Map<String, R>.mapToResults() =
     map { (_, result) -> result }
+
+private fun List<Parser.Result.Success>.mapToModel() = map { it.model }
+
+private fun List<Model>.merge(): Parser.Result =
+    when (val modelMergerResult = ModelMerger.merge(this)) {
+        is ModelMerger.Result.Success -> Parser.Result.Success(modelMergerResult.model)
+        ModelMerger.Result.Error -> Parser.Result.Error("Source files have name clashing. Incorrect source code.")
+    }
