@@ -17,6 +17,23 @@ import kotlin.test.assertNotNull
 class KotlinParserTest {
 
     @Test
+    fun `1 source file with wrong extension`() = test(
+        sourceFilePaths = listOf(JAVA_CLASS_A)
+    )
+
+    @Test
+    fun `2 source files with wrong extensions`() = test(
+        sourceFilePaths = listOf(JAVA_CLASS_A, JAVA_CLASS_B)
+    )
+
+    @Test
+    fun `2 source files, one with wrong extension`() = test(
+        sourceFilePaths = listOf(JAVA_CLASS_A, ONE_FINAL_CLASS),
+        parsedElements = mapOf("LastManOnEarth" to FINAL_CLASS)
+    )
+
+
+    @Test
     fun `0 source files, 0 elements`() = test(
         sourceFilePaths = emptyList(),
         parsedElements = emptyMap()
@@ -95,7 +112,10 @@ class KotlinParserTest {
     )
 
 
-    private fun test(sourceFilePaths: List<String>, parsedElements: Map<String, Element.Type>) {
+    private fun test(
+        sourceFilePaths: List<String>,
+        parsedElements: Map<String, Element.Type> = emptyMap()
+    ) {
         val parser = KotlinParser(SourceCodeReader())
         val result = parser.parse(sourceFilePaths)
         val actualModel = (result as Parser.Result.Success).model
@@ -111,6 +131,7 @@ class KotlinParserTest {
 
     companion object {
         private const val DIRECTORY = "src/assets/kotlin_parser"
+        private const val JAVA_DIRECTORY = "src/assets/java_parser"
         const val EMPTY_FILE = "$DIRECTORY/Empty.kt"
         const val ONE_INTERFACE = "$DIRECTORY/Factory.kt"
         const val ONE_FINAL_CLASS = "$DIRECTORY/Single.kt"
@@ -119,5 +140,7 @@ class KotlinParserTest {
         const val ONE_ENUM_CLASS = "$DIRECTORY/Size.kt"
         const val TWO_SAME_CLASSES = "$DIRECTORY/Arch.kt"
         const val TWO_DIFFERENT_CLASSES = "$DIRECTORY/Person.kt"
+        const val JAVA_CLASS_A = "$JAVA_DIRECTORY/Car.java"
+        const val JAVA_CLASS_B = "$JAVA_DIRECTORY/Animal.java"
     }
 }
