@@ -18,12 +18,14 @@ class KotlinParserTest {
 
     @Test
     fun `1 source file with wrong extension`() = test(
-        sourceFilePaths = listOf(JAVA_CLASS_A)
+        sourceFilePaths = listOf(JAVA_CLASS_A),
+        parsedElements = emptyMap()
     )
 
     @Test
     fun `2 source files with wrong extensions`() = test(
-        sourceFilePaths = listOf(JAVA_CLASS_A, JAVA_CLASS_B)
+        sourceFilePaths = listOf(JAVA_CLASS_A, JAVA_CLASS_B),
+        parsedElements = emptyMap()
     )
 
     @Test
@@ -112,10 +114,7 @@ class KotlinParserTest {
     )
 
 
-    private fun test(
-        sourceFilePaths: List<String>,
-        parsedElements: Map<String, Element.Type> = emptyMap()
-    ) {
+    private fun test(sourceFilePaths: List<String>, parsedElements: Map<String, Element.Type>) {
         val parser = KotlinParser(SourceCodeReader())
         val result = parser.parse(sourceFilePaths)
         val actualModel = (result as Parser.Result.Success).model
