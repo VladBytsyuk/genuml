@@ -8,7 +8,9 @@ class EditorView : View() {
         menubar {
             menu("File") {
                 item("Load from sources") {
-                    action {  }
+                    action {
+                        var dir = chooseDirectory("Select source code files")
+                    }
                 }
                 item("Clear") {
                     action {  }
