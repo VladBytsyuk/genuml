@@ -18,7 +18,7 @@ class MenuView : View() {
     private fun onClear() { /* do nothing */ }
 }
 
-object FILE {
+private object FILE {
     const val TITLE = "File"
     const val LOAD_FROM_SOURCES = "Load from sources"
     const val CLEAR = "Clear"
@@ -26,10 +26,10 @@ object FILE {
     const val SELECT_SOURCE_FILES = "Select source code files"
 }
 
-object EDIT {
+private object EDIT {
     const val TITLE = "Edit"
 }
 
-object VIEW {
+private object VIEW {
     const val TITLE = "View"
 }
