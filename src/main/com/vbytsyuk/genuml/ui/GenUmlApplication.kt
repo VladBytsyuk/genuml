@@ -1,6 +1,6 @@
 package ui
 
-import com.vbytsyuk.genuml.ui.EditorView
+import com.vbytsyuk.genuml.ui.screens.editor.EditorWindow
 import tornadofx.*
 
-class GenUmlApplication : App(EditorView::class)
+class GenUmlApplication : App(EditorWindow::class)
