@@ -6,8 +6,8 @@ import ui.screens.editor.MenuView
 
 
 class EditorWindow : View() {
-    override val root = vbox {
-        this += MenuView()
-        this += CanvasView()
+    override val root = borderpane {
+        top<MenuView>()
+        center<CanvasView>()
     }
 }
