@@ -6,12 +6,13 @@ import tornadofx.*
 class MenuView : View() {
     override val root = menubar {
         menu(FILE.TITLE) {
-            item(FILE.LOAD_FROM_SOURCES).action(::onLoadFromSources)
-            item(FILE.CLEAR).action(::onClear)
+            item(FILE.LOAD_FROM_SOURCES).action { onLoadFromSources() }
+            item(FILE.CLEAR).action { onClear() }
         }
         menu(EDIT.TITLE) { }
         menu(VIEW.TITLE) { }
     }
+
 
     private fun onLoadFromSources() = chooseDirectory(FILE.SELECT_SOURCE_FILES)
 
