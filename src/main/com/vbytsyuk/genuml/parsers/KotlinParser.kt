@@ -8,29 +8,27 @@ import com.vbytsyuk.genuml.domain.Model
 import com.vbytsyuk.genuml.usecases.addElement
 
 
-const val INTERFACE = "interface"
-const val CLASS = "class"
-const val FINAL_CLASS = "class"
-const val OPEN_CLASS = "open class"
-const val ABSTRACT_CLASS = "abstract class"
-const val ENUM_CLASS = "enum class"
+private const val INTERFACE = "interface"
+private const val CLASS = "class"
+private const val FINAL_CLASS = "class"
+private const val OPEN_CLASS = "open class"
+private const val ABSTRACT_CLASS = "abstract class"
+private const val ENUM_CLASS = "enum class"
 
 class KotlinParser(sourceCodeReader: ISourceCodeReader) : Parser(sourceCodeReader) {
     override val extension = "kt"
 
     override fun parseFile(sourceCodeLines: List<String>): Result {
-        val elementDeclarationLines =
-            sourceCodeLines.filter { it.contains("class ") || it.contains("interface ") }
-        if (elementDeclarationLines.isEmpty()) {
-            return Result.Success(model = Model())
-        }
+        val elementDeclarationLines = sourceCodeLines.filter { it.contains(CLASS) || it.contains(INTERFACE) }
+
+        if (elementDeclarationLines.isEmpty()) return Result.Success(model = Model())
 
         val model = Model()
         elementDeclarationLines.forEach { line ->
-            line.elementDeclaration?.let { (type, name) ->
-                model.addElement(type = type, coordinate = Coordinate(x = 0, y = 0))
-                    .apply { this.name = name }
-            }
+            val (type, name) = line.elementDeclaration ?: return@forEach
+            model
+                .addElement(type = type, coordinate = Coordinate(x = 0, y = 0))
+                .apply { this.name = name }
         }
         return Result.Success(model)
     }
