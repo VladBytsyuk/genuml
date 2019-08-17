@@ -38,7 +38,7 @@ abstract class Parser(private val sourceCodeReader: ISourceCodeReader) {
         else -> Result.WrongExtension
     }
 
-    internal abstract fun parseFile(sourceCodeLines: List<String>): Result
+    protected abstract fun parseFile(sourceCodeLines: List<String>): Result
 }
 
 
