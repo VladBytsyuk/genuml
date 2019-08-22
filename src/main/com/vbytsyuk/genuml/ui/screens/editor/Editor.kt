@@ -11,3 +11,9 @@ class EditorWindow : View() {
         center<CanvasView>()
     }
 }
+
+class EditorController : Controller() {
+    fun showErrors(errors: List<String>) {
+        println(errors)
+    }
+}

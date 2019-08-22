@@ -1,5 +1,6 @@
 package com.vbytsyuk.genuml.ui
 
+import main.initKoin
 import tornadofx.*
 import ui.GenUmlApplication
 
@@ -7,4 +8,7 @@ import ui.GenUmlApplication
 /**
  * Entry point into GenUML application
  */
-fun main(args: Array<String>) = launch<GenUmlApplication>(args)
+fun main(args: Array<String>) {
+    initKoin()
+    launch<GenUmlApplication>(args)
+}

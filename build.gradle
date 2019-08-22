@@ -4,6 +4,7 @@ buildscript {
     ext.tests_root = 'src/test/com/vbytsyuk/genuml/'
     ext.java_version = '1.8'
     ext.kotlin_version = '1.3.41'
+    ext.koin_version = '2.0.1'
     ext.detekt_version = '1.0.0-RC14'
 
     repositories {
@@ -57,6 +58,11 @@ dependencies {
 
     // TornadoFX: https://github.com/edvin/tornadofx
     implementation 'no.tornado:tornadofx:1.7.17'
+
+    // Koin: https://github.com/InsertKoinIO/koin
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-core-ext:$koin_version"
+    testImplementation "org.koin:koin-test:$koin_version"
 
     /* --------------------- Tests --------------------- */
     testImplementation "junit:junit:4.12"
