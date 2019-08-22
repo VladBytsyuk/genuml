@@ -32,10 +32,10 @@ class AppController(
 
         return models to errors
     }
-
-    private fun List<Model>.toParseControllerResult(paths: List<String>) =
-        when (val mergeResult = ModelMerger.merge(this)) {
-            is ModelMerger.Result.Success -> ParseController.Result.Success(mergeResult.model)
-            ModelMerger.Result.Error -> throw IllegalArgumentException("Can't merge $paths to model")
-        }
 }
+
+private fun List<Model>.toParseControllerResult(paths: List<String>) =
+    when (val mergeResult = ModelMerger.merge(this)) {
+        is ModelMerger.Result.Success -> ParseController.Result.Success(mergeResult.model)
+        ModelMerger.Result.Error -> throw IllegalArgumentException("Can't merge $paths to model")
+    }
