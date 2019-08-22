@@ -8,6 +8,8 @@ import java.lang.IllegalArgumentException
 class AppController(
     private val parsers: List<Parser> = emptyList()
 ) : ParseController {
+    override val extensionsList: List<String>
+        get() = parsers.map { it.extension }
 
     override fun parseFiles(paths: List<String>): ParseController.Result {
         val (models, errors) = paths.toModelsAndErrorsLists()

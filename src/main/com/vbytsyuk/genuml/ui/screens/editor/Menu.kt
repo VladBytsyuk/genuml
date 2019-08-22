@@ -27,7 +27,8 @@ private object VIEW {
 }
 
 
-class MenuView : View() {
+class MenuView : View(), KoinComponent {
+    private val parseController: ParseController by injectKoin()
     private val fileController: FileMenuController by inject()
 
     override val root = menubar {
@@ -40,7 +41,8 @@ class MenuView : View() {
         item(FILE.LOAD_FROM_SOURCES).action {
             val files = chooseFile(
                 title = FILE.SELECT_SOURCE_FILES,
-                filters = arrayOf(FileChooser.ExtensionFilter("All files", "*.*"))
+                filters = arrayOf(FileChooser.ExtensionFilter("All files", *parseController.extensionsList.map { "*.$it" }.toTypedArray())),
+                mode = FileChooserMode.Multi
             )
             fileController.onLoadFromSources(files)
         }

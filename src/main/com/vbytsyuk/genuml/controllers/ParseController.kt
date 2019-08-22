@@ -4,6 +4,8 @@ import com.vbytsyuk.genuml.domain.Model
 
 
 interface ParseController {
+    val extensionsList: List<String>
+
     fun parseFiles(paths: List<String>): Result
 
     sealed class Result {
