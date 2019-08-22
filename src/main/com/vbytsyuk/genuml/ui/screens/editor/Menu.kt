@@ -39,9 +39,12 @@ class MenuView : View(), KoinComponent {
 
     private fun MenuBar.fileMenu() = menu(FILE.TITLE) {
         item(FILE.LOAD_FROM_SOURCES).action {
+            val chooserFilters = arrayOf(
+                FileChooser.ExtensionFilter("All files", parseController.extensionsList.map { "*.$it" })
+            )
             val files = chooseFile(
                 title = FILE.SELECT_SOURCE_FILES,
-                filters = arrayOf(FileChooser.ExtensionFilter("All files", *parseController.extensionsList.map { "*.$it" }.toTypedArray())),
+                filters = chooserFilters,
                 mode = FileChooserMode.Multi
             )
             fileController.onLoadFromSources(files)
