@@ -13,7 +13,7 @@ class CanvasView : View() {
     private val controller: CanvasController by inject()
 
     override val root = form {
-        canvas(width = 1240.0, height = 720.0) {
+        canvas(WIDTH, HEIGHT) {
             controller.elementsProperty.addListener { _: Observable ->
                 renderElements(controller.elements)
             }
@@ -33,6 +33,7 @@ class CanvasController : Controller() {
     }
 }
 
+@SuppressWarnings("MagicNumber")
 fun Canvas.renderElements(elements: List<String>?) {
     val context = graphicsContext2D
     context.fill = Color.WHEAT
