@@ -31,11 +31,18 @@ class CanvasController : Controller() {
             FXCollections.observableArrayList(model.elements.map { "${it.name} [${it.type}]" })
         } ui { elementsProperty.value = it }
     }
+
+    fun clear() {
+        runAsync { /* do nothing */ } ui {
+            elementsProperty.value = ArrayList()
+        }
+    }
 }
 
 @SuppressWarnings("MagicNumber")
 fun Canvas.renderElements(elements: List<String>?) {
     val context = graphicsContext2D
+    context.clearRect(0.0, 0.0, WIDTH, HEIGHT)
     context.fill = Color.WHEAT
     context.stroke = Color.BLACK
     context.lineWidth = 2.0

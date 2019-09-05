@@ -63,11 +63,18 @@ class FileMenuController : Controller(), KoinComponent {
     private val canvasController: CanvasController by inject()
 
 
-    fun onLoadFromSources(files: List<File>) =
-        when (val parsingResult = parseController.parseFiles(paths = files.map { it.path })) {
-            is ParseController.Result.Success -> canvasController.renderModel(parsingResult.model)
-            is ParseController.Result.Error -> editorController.showErrors(parsingResult.errors)
+    fun onLoadFromSources(files: List<File>) {
+        runAsync {
+            parseController.parseFiles(paths = files.map { it.path })
+        } ui { parsingResult ->
+            when (parsingResult) {
+                is ParseController.Result.Success -> canvasController.renderModel(parsingResult.model)
+                is ParseController.Result.Error -> editorController.showErrors(parsingResult.errors)
+            }
         }
+    }
 
-    fun onClear() { /* do nothing */ }
+    fun onClear() {
+        canvasController.clear()
+    }
 }
