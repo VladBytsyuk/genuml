@@ -19,7 +19,7 @@ class AppControllerTest {
 
 
     @Test
-    fun `parse some correct kt files`() {
+    fun `parse kt files`() {
         val parsers = listOf(KotlinParser(SourceCodeReader()))
         val appController = AppController(parsers)
 
@@ -33,7 +33,7 @@ class AppControllerTest {
     }
 
     @Test
-    fun `parse some correct files with unsupported extension`() {
+    fun `parse wrong extension files`() {
         val parsers = listOf(KotlinParser(SourceCodeReader()))
         val appController = AppController(parsers)
 
