@@ -1,6 +1,5 @@
-package ui.screens.editor
+package com.vbytsyuk.genuml.ui.screens.editor
 
-import com.vbytsyuk.genuml.ui.screens.editor.EditorController
 import com.vbytsyuk.genuml.controllers.ParseController
 import javafx.scene.control.MenuBar
 import javafx.stage.FileChooser

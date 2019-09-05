@@ -1,10 +1,6 @@
 package com.vbytsyuk.genuml.ui.screens.editor
 
 import tornadofx.*
-import ui.screens.editor.CanvasView
-import ui.screens.editor.HEIGHT
-import ui.screens.editor.MenuView
-import ui.screens.editor.WIDTH
 
 
 class EditorWindow : View() {
