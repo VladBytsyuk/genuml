@@ -6,6 +6,7 @@ import com.vbytsyuk.genuml.parsers.KotlinParser
 import com.vbytsyuk.genuml.parsers.SourceCodeReader
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 class AppControllerTest {
     @Test
@@ -17,6 +18,14 @@ class AppControllerTest {
         AppController(parsers)
     }
 
+    @Test
+    fun `parse invalid path`() {
+        val parsers = listOf(KotlinParser(SourceCodeReader()))
+        val appController = AppController(parsers)
+
+        val paths = listOf("invalid path")
+        assertFails { appController.parseFiles(paths) }
+    }
 
     @Test
     fun `parse kt files`() {
