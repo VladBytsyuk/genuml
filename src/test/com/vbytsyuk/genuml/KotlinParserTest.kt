@@ -7,10 +7,12 @@ import com.vbytsyuk.genuml.domain.Element.Type.OPEN_CLASS
 import com.vbytsyuk.genuml.domain.Element.Type.INTERFACE
 import com.vbytsyuk.genuml.domain.Element.Type.ABSTRACT_CLASS
 import com.vbytsyuk.genuml.domain.Element.Type.ENUM_CLASS
+import com.vbytsyuk.genuml.domain.Model
 import com.vbytsyuk.genuml.parsers.*
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 
 @Suppress("FunctionMaxLength", "TooManyFunctions", "UnsafeCast")
@@ -114,17 +116,39 @@ class KotlinParserTest {
     )
 
 
+
     private fun test(sourceFilePaths: List<String>, parsedElements: Map<String, Element.Type>) {
+        val model = testModelConstruction(sourceFilePaths)
+        testModelContent(model, parsedElements)
+    }
+
+    private fun testModelConstruction(sourceFilePaths: List<String>): Model {
         val parser = KotlinParser(SourceCodeReader())
         val result = parser.parse(sourceFilePaths)
-        val actualModel = (result as Parser.Result.Success).model
-        assertEquals(actual = actualModel.references.size, expected = 0)
-        assertEquals(actual = actualModel.elements.size, expected = parsedElements.size)
-        parsedElements.forEach { (name, type) ->
-            val element = actualModel.elements.find { it.name == name }
-            assertNotNull(element)
-            assertEquals(actual = element?.type, expected = type)
-        }
+
+        assertTrue { result is Parser.Result.Success }
+
+        return (result as Parser.Result.Success).model
+    }
+
+    private fun testModelContent(model: Model, parsedElements: Map<String, Element.Type>) {
+        val referencesCount = model.references.size
+        val elementsCount = model.elements.size
+        val expectedElementsCount = parsedElements.size
+
+        assertEquals(actual = referencesCount, expected = 0)
+        assertEquals(actual = elementsCount, expected = expectedElementsCount)
+        assertElements(model, parsedElements)
+    }
+
+    private fun assertElements(
+        model: Model,
+        parsedElements: Map<String, Element.Type>
+    ) = parsedElements.forEach { (expectedName, expectedType) ->
+        val actualElement = model.elements.find { it.name == expectedName }
+
+        assertNotNull(actualElement)
+        assertEquals(actual = actualElement?.type, expected = expectedType)
     }
 
 
