@@ -1,6 +1,6 @@
 package com.assets.examples.kotlin
 
-class Person {
+open class Person {
     var name: Int
     var age: Int
     var phone: Phone?

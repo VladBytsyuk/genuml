@@ -1,4 +1,4 @@
-package com.assets.examples.kotlin
+package com.assets.examples.kotlin;
 
 open class Pet {
     val name: String
