@@ -152,7 +152,6 @@ class KotlinParserTest {
     }
 
 
-
     companion object {
         private const val DIRECTORY = "src/assets/kotlin_parser"
         const val EMPTY_FILE = "$DIRECTORY/Empty.kt"
