@@ -1,57 +1,92 @@
 package parsers
 
 import com.github.javaparser.StaticJavaParser
-import com.github.javaparser.ast.CompilationUnit
+import com.github.javaparser.ast.AccessSpecifier
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration
+import com.github.javaparser.ast.body.FieldDeclaration
+import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.body.TypeDeclaration
-import com.vbytsyuk.genuml.controllers.Parser.Result
-import com.vbytsyuk.genuml.domain.Coordinate
-import com.vbytsyuk.genuml.domain.Element
-import com.vbytsyuk.genuml.domain.Model
-import com.vbytsyuk.genuml.usecases.createElement
+import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations
+import com.vbytsyuk.genuml.controllers.Parser
+import com.vbytsyuk.genuml.domain.*
+import com.vbytsyuk.genuml.parsers.SourceCodeReader
+import com.vbytsyuk.genuml.usecases.createElementPresentation
+import com.vbytsyuk.genuml.usecases.generateId
 
-class JavaParser {
+class JavaParser(sourceCodeReader: SourceCodeReader) : Parser(sourceCodeReader) {
 
-    fun doShit(classText: String): Result {
-        val parsedJavaFile: CompilationUnit = StaticJavaParser.parse(classText)
-        val types = parsedJavaFile.types
+    override val extension = "java"
+
+    override fun parseFile(sourceCode: String): Result {
+        val javaFile = StaticJavaParser.parse(sourceCode)
+        val types = javaFile.types
         if (types.isEmpty())
             return Result.Error("Java file doesn't contain any class, enum or interface")
 
         val model = Model()
         types.forEach { typeDeclaration ->
-            typeDeclaration.toElement()?.let {
-                model.elements.add(it)
-            }
+            model.elements.add(typeDeclaration.toElement(Coordinate(0, 0)))
         }
         return Result.Success(model)
     }
+}
 
-    private fun TypeDeclaration<*>.toElement(): Element? {
-        val createElementAtStart: (String, Element.Type) -> Element =
-            { name, type -> createElement(name, type, Coordinate(0, 0)) }
+private fun TypeDeclaration<*>.toElement(coordinate: Coordinate) =
+        Element(
+                id = generateId(),
+                type = this.extractType(),
+                name = this.nameAsString,
+                methods = this.methods.map { it.toSimpleMethod() }.toMutableList(),
+                properties = this.fields.map { it.toProperty() }.toMutableList(),
+                presentation = createElementPresentation(coordinate)
+        )
+
+private fun TypeDeclaration<*>.extractType(): Element.Type =
         when {
-            isEnumDeclaration -> {
-                val enum = asEnumDeclaration()
-                return createElementAtStart(enum.nameAsString, Element.Type.ENUM_CLASS)
-            }
-            isClassOrInterfaceDeclaration -> {
-                val classOrInterface = asClassOrInterfaceDeclaration()
-                val type = when {
-                    classOrInterface.isInterface -> Element.Type.INTERFACE
-                    classOrInterface.isAbstract -> Element.Type.ABSTRACT_CLASS
-                    classOrInterface.isFinal -> Element.Type.FINAL_CLASS
-                    else -> Element.Type.OPEN_CLASS
-                }
-                return createElementAtStart(classOrInterface.nameAsString, type)
-            }
-            else -> return null
+            isEnumDeclaration -> Element.Type.ENUM_CLASS
+            isClassOrInterfaceDeclaration -> extractType(this.asClassOrInterfaceDeclaration())
+            else -> throw UnexpectedType()
         }
+
+private fun extractType(classOrInterface: ClassOrInterfaceDeclaration): Element.Type {
+    return when {
+        classOrInterface.isInterface -> Element.Type.INTERFACE
+        classOrInterface.isAbstract -> Element.Type.ABSTRACT_CLASS
+        classOrInterface.isFinal -> Element.Type.FINAL_CLASS
+        else -> Element.Type.OPEN_CLASS
     }
 }
 
-fun main() {
-    JavaParser().doShit(PAYLOAD)
-}
+private fun FieldDeclaration.toProperty() =
+        Property(
+                visibilityModifier = this.accessSpecifier.toVisibilityModifier(),
+                mutability = !this.isFinal,
+                name = this.toString(), // проверить
+                type = this.commonType.asString(), // проверить
+                nullability = this.isNullable()
+        )
+
+private fun MethodDeclaration.toSimpleMethod() =
+        Method(
+                visibilityModifier = this.accessSpecifier.toVisibilityModifier(),
+                name = this.nameAsString,
+                arguments = this.parameters
+                        .map { Argument(it.nameAsString, it.typeAsString) }
+                        .toMutableList(),
+                returnType = this.typeAsString,
+                nullability = this.isNullable()
+        )
+
+private fun NodeWithAnnotations<*>.isNullable() = this.isAnnotationPresent("Nullable") ||
+        !this.isAnnotationPresent("NotNull")
+
+private fun AccessSpecifier.toVisibilityModifier() =
+        when (this) {
+            AccessSpecifier.PRIVATE -> VisibilityModifier.PRIVATE
+            AccessSpecifier.PUBLIC -> VisibilityModifier.PUBLIC
+            AccessSpecifier.PROTECTED -> VisibilityModifier.PROTECTED
+            AccessSpecifier.PACKAGE_PRIVATE -> VisibilityModifier.INTERNAL
+        }
 
 private const val NON_FINAL_CLASS_TEXT = "package ui;\n" +
         "\n" +

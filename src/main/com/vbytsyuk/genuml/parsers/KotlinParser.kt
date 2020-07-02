@@ -18,8 +18,9 @@ private const val ENUM_CLASS = "enum class"
 class KotlinParser(sourceCodeReader: ISourceCodeReader) : Parser(sourceCodeReader) {
     override val extension = "kt"
 
-    override fun parseFile(sourceCodeLines: List<String>): Result {
-        val elementDeclarationLines = sourceCodeLines.filter { it.contains(CLASS) || it.contains(INTERFACE) }
+    override fun parseFile(sourceCode: String): Result {
+        val lines = sourceCode.split('\n')
+        val elementDeclarationLines = lines.filter { it.contains(CLASS) || it.contains(INTERFACE) }
 
         if (elementDeclarationLines.isEmpty()) return Result.Success(model = Model())
 
@@ -47,7 +48,7 @@ class KotlinParser(sourceCodeReader: ISourceCodeReader) : Parser(sourceCodeReade
         val words = split(Regex("([ ]|[(])"))
         val wordIndex = words.indexOf(word)
         return when {
-            wordIndex + 1 in 0 until words.size -> words[wordIndex + 1]
+            wordIndex + 1 in words.indices -> words[wordIndex + 1]
             else -> ""
         }
     }

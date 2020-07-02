@@ -33,12 +33,12 @@ abstract class Parser(private val sourceCodeReader: ISourceCodeReader) {
             .map { (path, sourceCode) -> path to parse(sourceCode, path) }
             .toMap()
 
-    private fun parse(sourceCode: List<String>, path: String): Result = when {
+    private fun parse(sourceCode: String, path: String): Result = when {
         path.endsWith(extension) -> parseFile(sourceCode)
         else -> Result.WrongExtension
     }
 
-    protected abstract fun parseFile(sourceCodeLines: List<String>): Result
+    protected abstract fun parseFile(sourceCode: String): Result
 }
 
 

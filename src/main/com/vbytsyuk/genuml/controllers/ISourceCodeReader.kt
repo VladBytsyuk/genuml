@@ -5,5 +5,5 @@ interface ISourceCodeReader {
     /**
      * Read a text file and returns a list of lines
      */
-    fun readFile(pathToFile: String): List<String>
+    fun readFile(pathToFile: String): String
 }
