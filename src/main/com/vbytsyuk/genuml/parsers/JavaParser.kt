@@ -2,10 +2,7 @@ package parsers
 
 import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.AccessSpecifier
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration
-import com.github.javaparser.ast.body.FieldDeclaration
-import com.github.javaparser.ast.body.MethodDeclaration
-import com.github.javaparser.ast.body.TypeDeclaration
+import com.github.javaparser.ast.body.*
 import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations
 import com.vbytsyuk.genuml.controllers.Parser
 import com.vbytsyuk.genuml.domain.*
@@ -61,8 +58,11 @@ private fun FieldDeclaration.toProperty() =
         Property(
                 visibilityModifier = this.accessSpecifier.toVisibilityModifier(),
                 mutability = !this.isFinal,
-                name = this.toString(), // проверить
-                type = this.commonType.asString(), // проверить
+            // todo: simplify
+                name = (this.childNodes
+                    .first { it is VariableDeclarator } as VariableDeclarator)
+                    .nameAsString,
+                type = this.commonType.asString(),
                 nullability = this.isNullable()
         )
 
