@@ -17,8 +17,9 @@ class JavaParser(sourceCodeReader: SourceCodeReader) : Parser(sourceCodeReader) 
     override fun parseFile(sourceCode: String): Result {
         val javaFile = StaticJavaParser.parse(sourceCode)
         val types = javaFile.types
-        if (types.isEmpty())
+        if (types.isEmpty()) {
             return Result.Error("Java file doesn't contain any class, enum or interface")
+        }
 
         val model = Model()
         types.forEach { typeDeclaration ->
@@ -87,58 +88,3 @@ private fun AccessSpecifier.toVisibilityModifier() =
             AccessSpecifier.PROTECTED -> VisibilityModifier.PROTECTED
             AccessSpecifier.PACKAGE_PRIVATE -> VisibilityModifier.INTERNAL
         }
-
-private const val NON_FINAL_CLASS_TEXT = "package ui;\n" +
-        "\n" +
-        "import org.jetbrains.annotations.NotNull;\n" +
-        "\n" +
-        "import javax.swing.*;\n" +
-        "\n" +
-        "public class SettingsForm {\n" +
-        "    private JCheckBox useLombokCheckBox;\n" +
-        "    private JPanel settingsPanel;\n" +
-        "\n" +
-        "    public SettingsForm(@NotNull Boolean useLombok) {\n" +
-        "        if (useLombokCheckBox != null) {\n" +
-        "            useLombokCheckBox.setSelected(useLombok);\n" +
-        "        }\n" +
-        "    }\n" +
-        "\n" +
-        "    public Boolean useLombok() {\n" +
-        "        return useLombokCheckBox.isSelected();\n" +
-        "    }\n" +
-        "\n" +
-        "    public JComponent getSettingsPanel() {\n" +
-        "        return settingsPanel;\n" +
-        "    }\n" +
-        "}\n"
-
-private const val PAYLOAD = "package mypackage;\n" +
-        "\n" +
-        "import java.time.Instant;\n" +
-        "\n" +
-        "public class SampleTable {\n" +
-        "    private Long id;\n" +
-        "    private String name;\n" +
-        "    private Instant birthday;\n" +
-        "}\n" +
-        "\n" +
-        "interface SampleTable1 {\n" +
-        "    void doShit();\n" +
-        "}\n" +
-        "\n" +
-        "final class SampleTable2 {\n" +
-        "    private Long id;\n" +
-        "    private String name;\n" +
-        "    private Instant birthday;\n" +
-        "}\n" +
-        "\n" +
-        "abstract class SampleTable3 {\n" +
-        "    private Long id;\n" +
-        "    private String name;\n" +
-        "    private Instant birthday;\n" +
-        "}\n" +
-        "\n" +
-        "enum SampleTable4 {\n" +
-        "    ONE, TWO, THREE;\n" +
-        "}\n"

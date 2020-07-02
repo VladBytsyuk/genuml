@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-abstract class AbstractParserTest(private val parser: Parser) {
+open class AbstractParserTest(private val parser: Parser) {
 
     protected fun test(sourceFilePaths: List<String>, parsedElements: Map<String, Element.Type>) {
         val model = testModelConstruction(sourceFilePaths)
