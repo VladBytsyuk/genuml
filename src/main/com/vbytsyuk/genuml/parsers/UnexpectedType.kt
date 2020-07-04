@@ -1,6 +1,3 @@
 package parsers
 
-class UnexpectedType : Exception {
-    constructor() : super("Failed to recognize type")
-    constructor(message: String?) : super(message)
-}
+class UnexpectedType(message: String = "Failed to recognize type") : Exception(message)

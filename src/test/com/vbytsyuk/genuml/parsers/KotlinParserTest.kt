@@ -5,7 +5,7 @@ import org.junit.Test
 
 
 @Suppress("FunctionMaxLength", "TooManyFunctions", "UnsafeCast")
-class KotlinParserTest : AbstractParserTest(KotlinParser(SourceCodeReader())) {
+class KotlinParserTest : ParserTest(KotlinParser(SourceCodeReader())) {
 
     @Test
     fun `1 source file with wrong extension`() = test(
