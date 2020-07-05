@@ -6,7 +6,7 @@ import java.io.File
 
 class SourceCodeReader : ISourceCodeReader {
 
-    override fun readFile(pathToFile: String): List<String> =
-        File(pathToFile).readLines()
+    override fun readFile(pathToFile: String): String =
+        File(pathToFile).readText()
 
 }

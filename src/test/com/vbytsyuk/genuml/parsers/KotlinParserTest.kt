@@ -1,22 +1,11 @@
-package com.vbytsyuk.genuml
+package com.vbytsyuk.genuml.parsers
 
-import com.vbytsyuk.genuml.controllers.Parser
-import com.vbytsyuk.genuml.domain.Element
-import com.vbytsyuk.genuml.domain.Element.Type.FINAL_CLASS
-import com.vbytsyuk.genuml.domain.Element.Type.OPEN_CLASS
-import com.vbytsyuk.genuml.domain.Element.Type.INTERFACE
-import com.vbytsyuk.genuml.domain.Element.Type.ABSTRACT_CLASS
-import com.vbytsyuk.genuml.domain.Element.Type.ENUM_CLASS
-import com.vbytsyuk.genuml.domain.Model
-import com.vbytsyuk.genuml.parsers.*
+import com.vbytsyuk.genuml.domain.Element.Type.*
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 
 @Suppress("FunctionMaxLength", "TooManyFunctions", "UnsafeCast")
-class KotlinParserTest {
+class KotlinParserTest : ParserTest(KotlinParser(SourceCodeReader())) {
 
     @Test
     fun `1 source file with wrong extension`() = test(
@@ -114,43 +103,6 @@ class KotlinParserTest {
         sourceFilePaths = listOf(ONE_ENUM_CLASS, TWO_DIFFERENT_CLASSES, ONE_OPEN_CLASS),
         parsedElements = mapOf(PERSON to OPEN_CLASS, PHONE to FINAL_CLASS, STORE to OPEN_CLASS, SIZE to ENUM_CLASS)
     )
-
-
-
-    private fun test(sourceFilePaths: List<String>, parsedElements: Map<String, Element.Type>) {
-        val model = testModelConstruction(sourceFilePaths)
-        testModelContent(model, parsedElements)
-    }
-
-    private fun testModelConstruction(sourceFilePaths: List<String>): Model {
-        val parser = KotlinParser(SourceCodeReader())
-        val result = parser.parse(sourceFilePaths)
-
-        assertTrue { result is Parser.Result.Success }
-
-        return (result as Parser.Result.Success).model
-    }
-
-    private fun testModelContent(model: Model, parsedElements: Map<String, Element.Type>) {
-        val referencesCount = model.references.size
-        val elementsCount = model.elements.size
-        val expectedElementsCount = parsedElements.size
-
-        assertEquals(actual = referencesCount, expected = 0)
-        assertEquals(actual = elementsCount, expected = expectedElementsCount)
-        assertElements(model, parsedElements)
-    }
-
-    private fun assertElements(
-        model: Model,
-        parsedElements: Map<String, Element.Type>
-    ) = parsedElements.forEach { (expectedName, expectedType) ->
-        val actualElement = model.elements.find { it.name == expectedName }
-
-        assertNotNull(actualElement)
-        assertEquals(actual = actualElement?.type, expected = expectedType)
-    }
-
 
     companion object {
         private const val DIRECTORY = "src/assets/kotlin_parser"

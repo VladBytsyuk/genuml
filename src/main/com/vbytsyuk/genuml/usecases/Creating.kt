@@ -15,13 +15,15 @@ internal fun generateId(): Id = UUID.randomUUID().toString()
 internal fun createElement(
     name: String,
     type: Element.Type,
-    coordinate: Coordinate
+    coordinate: Coordinate,
+    properties: MutableList<Property> = emptyMutableList(),
+    methods: MutableList<Method> = emptyMutableList()
 ) = Element(
     id = generateId(),
     type = type,
     name = name,
-    properties = emptyMutableList(),
-    methods = emptyMutableList(),
+    properties = properties,
+    methods = methods,
     presentation = createElementPresentation(coordinate)
 )
 
