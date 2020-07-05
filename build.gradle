@@ -2,7 +2,6 @@
 //plugins {
 //    id 'io.gitlab.arturbosch.detekt' version '1.0.0-RC14'
 //}
-//
 //apply plugin: "io.gitlab.arturbosch.detekt"
 
 allprojects {
@@ -17,18 +16,30 @@ group 'com.vbytsyuk'
 version '0.1'
 
 
-
 /* ======================= Tasks ======================= */
-//jar {
-//    manifest { attributes 'Main-Class': 'com.vbytsyuk.genuml.MainKt' }
-//    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-//}
-
 //detekt {
 //    toolVersion = "1.0.0-RC14"
-//    input = files("src/main/com/vbytsyuk/genuml", "src/test/com/vbytsyuk/genuml")
+//    input = files(
+//            "common/src/main/kotlin",
+//            "common/src/test/kotlin",
+//
+//            "controller/src/main/kotlin",
+//            "controller/src/test/kotlin",
+//
+//            "domain/src/main/kotlin",
+//            "domain/src/test/kotlin",
+//
+//            "parser/src/main/kotlin",
+//            "parser/src/test/kotlin",
+//
+//            "ui/src/main/kotlin",
+//            "ui/src/test/kotlin",
+//
+//            "usecases/src/main/kotlin",
+//            "usecases/src/test/kotlin"
+//    )
 //    config = files("detekt-config.yml")
-//    filters = ".*/resources/.*,.*/build/.*"
+//    filters = ".*/resources/.*,.*/build/.*,.*/assets/.*"
 //    reports {
 //        xml { enabled = false }
 //        html {

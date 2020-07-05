@@ -16,9 +16,6 @@ dependencies {
     implementation project(':controller')
     implementation project(':ui')
 
-    // TornadoFX: https://github.com/edvin/tornadofx
-    implementation 'no.tornado:tornadofx:1.7.17'
-
     // Koin: https://github.com/InsertKoinIO/koin
     implementation "org.koin:koin-core:$koin_version"
     implementation "org.koin:koin-core-ext:$koin_version"
@@ -29,9 +26,5 @@ dependencies {
     testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.1.51'
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
+compileKotlin. kotlinOptions.jvmTarget = "1.8"
+compileTestKotlin.kotlinOptions.jvmTarget = "1.8"

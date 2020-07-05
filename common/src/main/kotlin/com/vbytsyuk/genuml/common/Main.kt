@@ -1,6 +1,5 @@
 package com.vbytsyuk.genuml.common
 
-import tornadofx.*
 import com.vbytsyuk.genuml.ui.GenUmlApplication
 
 
@@ -9,5 +8,5 @@ import com.vbytsyuk.genuml.ui.GenUmlApplication
  */
 fun main(args: Array<String>) {
     initKoin()
-    launch<GenUmlApplication>(args)
+    GenUmlApplication.launch(args)
 }
