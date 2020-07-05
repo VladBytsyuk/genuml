@@ -3,7 +3,14 @@
 gradle/wrapper/gradle-wrapper.properties
 /local.properties
 /build
+/common/build/
+/controller/build/
+/domain/build/
+/parser/build/
+/ui/build/
+/usecases/build/
 /captures
 /.idea/*
 !/.idea/codeStyles/*
 !/.idea/inspectionProfiles/*
+

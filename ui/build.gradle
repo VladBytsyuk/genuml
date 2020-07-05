@@ -21,7 +21,8 @@ dependencies {
     implementation "org.koin:koin-core-ext:$koin_version"
     testImplementation "org.koin:koin-test:$koin_version"
 
-    compile project(':controller')
+    implementation project(':domain')
+    implementation project(':controller')
 
     testImplementation "junit:junit:4.12"
     testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.1.51'
