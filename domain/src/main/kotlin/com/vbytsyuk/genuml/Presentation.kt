@@ -1,12 +1,6 @@
 package com.vbytsyuk.genuml.domain
 
-data class Coordinate(val x: Int, val y: Int) {
-    companion object {
-        val origin: Coordinate
-            get() = Coordinate(0, 0)
-    }
-}
-
+data class Coordinate(val x: Int, val y: Int)
 data class Size(val width: Int, val height: Int)
 
 @Suppress("UnnecessaryAbstractClass") // It will be implemented in the future

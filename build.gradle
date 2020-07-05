@@ -1,98 +1,37 @@
-/* ============= Base settings & variables ============= */
-buildscript {
-    ext.project_root = 'src/main/com/vbytsyuk/genuml/'
-    ext.tests_root = 'src/test/com/vbytsyuk/genuml/'
-    ext.java_version = '1.8'
-    ext.kotlin_version = '1.3.50'
-    ext.koin_version = '2.0.1'
-    ext.detekt_version = '1.0.0-RC14'
+/* ====================== Plugins ====================== */
+//plugins {
+//    id 'io.gitlab.arturbosch.detekt' version '1.0.0-RC14'
+//}
+//
+//apply plugin: "io.gitlab.arturbosch.detekt"
 
+allprojects {
     repositories {
         mavenCentral()
         jcenter()
     }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detekt_version"
-    }
 }
-
-
-/* ====================== Plugins ====================== */
-plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
-    id 'io.gitlab.arturbosch.detekt' version '1.0.0-RC14'
-}
-
-apply plugin: "io.gitlab.arturbosch.detekt"
-
 
 /* =================== Project info ==================== */
-group 'com.vbytsyuk.genuml'
-version 'v0.1'
-
-sourceCompatibility = 1.8
-
-
-/* ====================== Sources ====================== */
-sourceSets {
-    main.java.srcDirs += "$project_root"
-    main.kotlin.srcDirs += "$project_root"
-    test.java.srcDirs += "$tests_root"
-    test.kotlin.srcDirs += "$tests_root"
-}
-
-
-
-/* =================== Repositories ==================== */
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
-
-/* =================== Dependencies ==================== */
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    // TornadoFX: https://github.com/edvin/tornadofx
-    implementation 'no.tornado:tornadofx:1.7.17'
-
-    // Koin: https://github.com/InsertKoinIO/koin
-    implementation "org.koin:koin-core:$koin_version"
-    implementation "org.koin:koin-core-ext:$koin_version"
-    testImplementation "org.koin:koin-test:$koin_version"
-
-    // JavaParser: https://github.com/javaparser/javaparser
-    implementation "com.github.javaparser:javaparser-core:3.16.1"
-
-    /* --------------------- Tests --------------------- */
-    testImplementation "junit:junit:4.12"
-    testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.1.51'
-}
-
+group 'com.vbytsyuk'
+version '0.1'
 
 /* ======================= Tasks ======================= */
-jar {
-    manifest { attributes 'Main-Class': 'com.vbytsyuk.genuml.MainKt' }
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-}
+//jar {
+//    manifest { attributes 'Main-Class': 'com.vbytsyuk.genuml.MainKt' }
+//    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+//}
 
-compileKotlin { kotlinOptions.jvmTarget = "$java_version" }
-compileTestKotlin { kotlinOptions.jvmTarget = "$java_version" }
-
-
-detekt {
-    toolVersion = "1.0.0-RC14"
-    input = files("src/main/com/vbytsyuk/genuml", "src/test/com/vbytsyuk/genuml")
-    config = files("detekt-config.yml")
-    filters = ".*/resources/.*,.*/build/.*"
-    reports {
-        xml { enabled = false }
-        html {
-            enabled = true
-            destination = file("build/reports/detekt.html")
-        }
-    }
-}
+//detekt {
+//    toolVersion = "1.0.0-RC14"
+//    input = files("src/main/com/vbytsyuk/genuml", "src/test/com/vbytsyuk/genuml")
+//    config = files("detekt-config.yml")
+//    filters = ".*/resources/.*,.*/build/.*"
+//    reports {
+//        xml { enabled = false }
+//        html {
+//            enabled = true
+//            destination = file("build/reports/detekt.html")
+//        }
+//    }
+//}

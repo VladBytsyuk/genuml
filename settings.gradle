@@ -1,1 +1,8 @@
-rootProject.name = 'com.vbytsyuk.genuml'
+rootProject.name = 'genuml'
+
+include 'common'
+include 'controller'
+include 'domain'
+include 'parser'
+include 'ui'
+include 'use-cases'
