@@ -32,7 +32,7 @@ class AppControllerTest {
         val parsers = listOf(KotlinParser(SourceCodeReader()))
         val appController = AppController(parsers)
 
-        val directory = "src/assets/kotlin_parser"
+        val directory = "../assets/kotlin_parser"
         val paths = listOf("$directory/Game.kt", "$directory/Animals.kt")
         val parsingResult = appController.parseFiles(paths)
 
@@ -46,7 +46,7 @@ class AppControllerTest {
         val parsers = listOf(KotlinParser(SourceCodeReader()))
         val appController = AppController(parsers)
 
-        val directory = "src/assets/java_parser"
+        val directory = "../assets/java_parser"
         val paths = listOf("$directory/Animal.java", "$directory/Car.java")
         val parsingResult = appController.parseFiles(paths)
 

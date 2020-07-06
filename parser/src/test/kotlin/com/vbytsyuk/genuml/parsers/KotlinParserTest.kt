@@ -105,7 +105,7 @@ class KotlinParserTest : ParserTest(KotlinParser(SourceCodeReader())) {
     )
 
     companion object {
-        private const val DIRECTORY = "src/assets/kotlin_parser"
+        private const val DIRECTORY = "../assets/kotlin_parser"
         const val EMPTY_FILE = "$DIRECTORY/Empty.kt"
 
         const val ONE_INTERFACE = "$DIRECTORY/Factory.kt"
@@ -131,7 +131,7 @@ class KotlinParserTest : ParserTest(KotlinParser(SourceCodeReader())) {
         const val PERSON = "Person"
         const val PHONE = "Phone"
 
-        private const val JAVA_DIRECTORY = "src/assets/java_parser"
+        private const val JAVA_DIRECTORY = "../assets/java_parser"
         const val JAVA_CLASS_A = "$JAVA_DIRECTORY/Car.java"
         const val JAVA_CLASS_B = "$JAVA_DIRECTORY/Animal.java"
     }

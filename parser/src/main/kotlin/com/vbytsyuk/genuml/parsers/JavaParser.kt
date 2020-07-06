@@ -6,11 +6,12 @@ import com.github.javaparser.ast.AccessSpecifier
 import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.body.*
 import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations
+import com.vbytsyuk.genuml.controllers.ISourceCodeReader
 import com.vbytsyuk.genuml.controllers.Parser
 import com.vbytsyuk.genuml.domain.*
 import com.vbytsyuk.genuml.usecases.addElement
 
-class JavaParser(sourceCodeReader: SourceCodeReader) : Parser(sourceCodeReader) {
+class JavaParser(sourceCodeReader: ISourceCodeReader) : Parser(sourceCodeReader) {
 
     override val extension = "java"
 

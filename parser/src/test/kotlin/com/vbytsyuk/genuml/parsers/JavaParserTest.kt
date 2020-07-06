@@ -1,8 +1,6 @@
-package parsers
+package com.vbytsyuk.genuml.parsers
 
 import com.vbytsyuk.genuml.domain.Element
-import com.vbytsyuk.genuml.parsers.ParserTest
-import com.vbytsyuk.genuml.parsers.SourceCodeReader
 import org.junit.Test
 
 class JavaParserTest : ParserTest(JavaParser(SourceCodeReader())) {
@@ -14,7 +12,7 @@ class JavaParserTest : ParserTest(JavaParser(SourceCodeReader())) {
     )
 
     companion object {
-        private const val DIRECTORY = "src/assets/java_parser"
+        private const val DIRECTORY = "../assets/java_parser"
 
         const val CAR = "$DIRECTORY/Car.java"
     }
