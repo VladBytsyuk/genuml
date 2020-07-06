@@ -13,7 +13,12 @@ import org.koin.dsl.module
 fun initKoin() = startKoin {
     val controllerModule = module {
         single<ISourceCodeReader> { SourceCodeReader() }
-        single<ParseController> { AppController(listOf(KotlinParser(get()), JavaParser(get()))) }
+        single<ParseController> {
+            AppController(
+                KotlinParser(sourceCodeReader = get()),
+                JavaParser(sourceCodeReader = get())
+            )
+        }
     }
     modules(listOf(controllerModule))
 }

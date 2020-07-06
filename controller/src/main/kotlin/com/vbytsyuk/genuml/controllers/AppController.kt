@@ -8,6 +8,9 @@ import java.lang.IllegalArgumentException
 class AppController(
     private val parsers: List<Parser> = emptyList()
 ) : ParseController {
+
+    constructor(vararg parser: Parser) : this(parser.toList())
+
     override val extensionsList: List<String>
         get() = parsers.map { it.extension }
 
