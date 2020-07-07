@@ -5,9 +5,9 @@ jobs:
   include:
     - stage: build
       script: ./gradlew assemble
-    - stage: detekt
-      script: ./gradlew detekt
     - stage: unit test
       script: ./gradlew test
+    - stage: detekt
+      script: ./gradlew detekt
 notifications:
   webhooks: https://fathomless-fjord-24024.herokuapp.com/notify

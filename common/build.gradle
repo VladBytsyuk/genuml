@@ -1,0 +1,17 @@
+buildscript {
+    ext.koin_version = '2.0.1'
+}
+
+dependencies {
+    implementation project(':parser')
+    implementation project(':ui')
+
+    // Koin: https://github.com/InsertKoinIO/koin
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-core-ext:$koin_version"
+    testImplementation "org.koin:koin-test:$koin_version"
+
+
+    testImplementation "junit:junit:4.12"
+    testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.1.51'
+}

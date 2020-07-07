@@ -1,0 +1,9 @@
+dependencies {
+    // JavaParser: https://github.com/javaparser/javaparser
+    implementation "com.github.javaparser:javaparser-core:3.16.1"
+
+    api project(':controller')
+
+    testImplementation "junit:junit:4.12"
+    testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.1.51'
+}
