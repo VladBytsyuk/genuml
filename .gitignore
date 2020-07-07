@@ -11,6 +11,7 @@ gradle/wrapper/gradle-wrapper.properties
 /usecases/build/
 /captures
 /.idea/*
+
 !/.idea/codeStyles/*
 !/.idea/inspectionProfiles/*
 

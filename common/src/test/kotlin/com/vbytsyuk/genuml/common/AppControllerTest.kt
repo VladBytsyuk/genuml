@@ -1,4 +1,4 @@
-package com.vbytsyuk.genuml
+package com.vbytsyuk.genuml.common
 
 import com.vbytsyuk.genuml.controllers.AppController
 import com.vbytsyuk.genuml.controllers.ParseController

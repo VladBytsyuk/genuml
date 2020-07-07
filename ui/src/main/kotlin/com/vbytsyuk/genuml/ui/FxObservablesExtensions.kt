@@ -9,4 +9,4 @@ fun <T> List<T>.toObservableList(): ObservableList<T> =
     FXCollections.observableArrayList(this)
 
 fun Observable.onChange(block: () -> Unit) =
-    addListener { _: Observable -> block() }
+    addListener { block() }
