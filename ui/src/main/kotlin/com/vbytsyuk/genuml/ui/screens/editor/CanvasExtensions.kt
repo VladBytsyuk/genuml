@@ -1,45 +1,66 @@
 package com.vbytsyuk.genuml.ui.screens.editor
 
 import com.vbytsyuk.genuml.domain.Element
-import com.vbytsyuk.genuml.domain.VisibilityModifier
+import com.vbytsyuk.genuml.domain.VisibilityModifier.*
 import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
 import javafx.scene.paint.Paint
+import javafx.scene.text.Font
 
 
 @SuppressWarnings("MagicNumber")
 fun Canvas.renderElements(elements: List<Element>?) {
+    data class TextWithCoordinates(val text: String, val x: Double, val y: Double)
+
     graphicsContext2D.clearRect(0.0, 0.0, WIDTH, HEIGHT)
     val x = 0.0
     var y = 40.0
     elements?.forEach { element ->
-        drawRect(x, y, width = 450.0, height = 250.0, fillColor = element.color, strokeWidth = 1.0)
-        drawText(x + 25.0, y + 10, text = element.name)
-        y += 50.0
-        element.properties.forEach { property ->
-            val visibility = when (property.visibilityModifier) {
-                VisibilityModifier.PRIVATE -> '-'
-                VisibilityModifier.PUBLIC -> '+'
-                VisibilityModifier.PROTECTED -> '#'
-                VisibilityModifier.INTERNAL -> '~'
-            }
-            drawText(x + 25.0, y + 10, text = "$visibility\t${property.name}: ${property.type}")
-            y += 25.0
+        val startY = y
+        val textsHolder = mutableListOf<TextWithCoordinates>()
+        textsHolder.add(TextWithCoordinates(text = element.name, x = x + MARGIN, y = y + MARGIN))
+        y += 2 * MARGIN
+        element.propertiesTexts.forEach {
+            textsHolder.add(TextWithCoordinates(text = it, x = x + MARGIN, y = y + MARGIN))
+            y += MARGIN
         }
-        y += 25.0
-        element.methods.forEach { meth ->
-            val visibility = when (meth.visibilityModifier) {
-                VisibilityModifier.PRIVATE -> '-'
-                VisibilityModifier.PUBLIC -> '+'
-                VisibilityModifier.PROTECTED -> '#'
-                VisibilityModifier.INTERNAL -> '~'
-            }
-            val args = meth.arguments.joinToString(separator = ", ") { "${it.name}: ${it.type}" }
-            drawText(x + 25.0, y + 10, text = "$visibility\t${meth.name}($args): ${meth.returnType}")
-            y += 25.0
+        y += MARGIN
+        element.methodsTexts.forEach {
+            textsHolder.add(TextWithCoordinates(text = it, x = x + MARGIN, y = y + MARGIN))
+            y += MARGIN
         }
-        y += 250.0
+        y += MARGIN
+        val maxLength = (listOf(element.name) + element.propertiesTexts + element.methodsTexts)
+            .map { it.length }.max()?.toDouble() ?: 1.0
+        drawRect(
+            x, startY,
+            width = maxLength * FONT_SIZE, height = y - startY,
+            fillColor = element.color, strokeWidth = 1.0
+        )
+        textsHolder.forEach { (text, x, y) -> drawText(x, y, text) }
+        y += MARGIN
     }
+}
+
+private val Element.propertiesTexts: List<String> get() = properties.map { property ->
+    val visibility = when (property.visibilityModifier) {
+        PRIVATE -> '-'
+        PUBLIC -> '+'
+        PROTECTED -> '#'
+        INTERNAL -> '~'
+    }
+    "$visibility\t${property.name}: ${property.type}"
+}
+
+private val Element.methodsTexts get() = methods.map { method ->
+    val visibility = when (method.visibilityModifier) {
+        PRIVATE -> '-'
+        PUBLIC -> '+'
+        PROTECTED -> '#'
+        INTERNAL -> '~'
+    }
+    val args = method.arguments.joinToString(separator = ", ") { "${it.name}: ${it.type}" }
+    "$visibility\t${method.name}($args): ${method.returnType}"
 }
 
 private val Element.color: Color get() = when (this.type) {
@@ -50,18 +71,20 @@ private val Element.color: Color get() = when (this.type) {
     Element.Type.ENUM_CLASS -> Color.BLUEVIOLET
 }
 
-
 /* =====================================================================================================================
  * Primitives
  * =====================================================================================================================
  */
 
 fun Canvas.drawRect(
-    x: Double, y: Double,
-    width: Double, height: Double,
-    fillColor: Paint = Color.WHITE, strokeColor: Paint = Color.BLACK,
+    x: Double,
+    y: Double,
+    width: Double,
+    height: Double,
+    fillColor: Paint = Color.WHITE,
+    strokeColor: Paint = Color.BLACK,
     strokeWidth: Double = 0.0
-) = with (graphicsContext2D) {
+) = with(graphicsContext2D) {
     fill = fillColor
     fillRect(x, y, width, height)
     lineWidth = strokeWidth
@@ -69,8 +92,12 @@ fun Canvas.drawRect(
     strokeRect(x, y, width, height)
 }
 
+const val MARGIN = 36.0
+const val FONT_SIZE = 24.0
+
 @SuppressWarnings("MagicNumber")
-fun Canvas.drawText(x: Double, y: Double, text: String) = with (graphicsContext2D) {
+fun Canvas.drawText(x: Double, y: Double, text: String) = with(graphicsContext2D) {
     fill = Color.BLACK
+    font = Font.font(FONT_SIZE)
     fillText(text, x, y + 20)
 }
