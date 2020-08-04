@@ -1,6 +1,7 @@
 package com.vbytsyuk.genuml.ui.screens.editor
 
 import com.vbytsyuk.genuml.domain.Element
+import com.vbytsyuk.genuml.domain.VisibilityModifier
 import com.vbytsyuk.genuml.domain.VisibilityModifier.*
 import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
@@ -18,20 +19,20 @@ fun Canvas.renderElements(elements: List<Element>?) {
     elements?.forEach { element ->
         val startY = y
         val textsHolder = mutableListOf<TextWithCoordinates>()
-        textsHolder.add(TextWithCoordinates(text = element.name, x = x + MARGIN, y = y + MARGIN))
+        textsHolder.add(TextWithCoordinates(element.name, x + MARGIN, y + MARGIN))
         y += 2 * MARGIN
-        element.propertiesTexts.forEach {
-            textsHolder.add(TextWithCoordinates(text = it, x = x + MARGIN, y = y + MARGIN))
+        element.propertiesTexts.forEach { text ->
+            textsHolder.add(TextWithCoordinates(text, x + MARGIN, y + MARGIN))
             y += MARGIN
         }
         y += MARGIN
-        element.methodsTexts.forEach {
-            textsHolder.add(TextWithCoordinates(text = it, x = x + MARGIN, y = y + MARGIN))
+        element.methodsTexts.forEach { text ->
+            textsHolder.add(TextWithCoordinates(text, x + MARGIN, y + MARGIN))
             y += MARGIN
         }
         y += MARGIN
         val maxLength = (listOf(element.name) + element.propertiesTexts + element.methodsTexts)
-            .map { it.length }.max()?.toDouble() ?: 1.0
+            .map { it.length }.max()!!
         drawRect(
             x, startY,
             width = maxLength * FONT_SIZE, height = y - startY,
@@ -43,24 +44,19 @@ fun Canvas.renderElements(elements: List<Element>?) {
 }
 
 private val Element.propertiesTexts: List<String> get() = properties.map { property ->
-    val visibility = when (property.visibilityModifier) {
-        PRIVATE -> '-'
-        PUBLIC -> '+'
-        PROTECTED -> '#'
-        INTERNAL -> '~'
-    }
-    "$visibility\t${property.name}: ${property.type}"
+    "${property.visibilityModifier.symbol}\t${property.name}: ${property.type}"
 }
 
 private val Element.methodsTexts get() = methods.map { method ->
-    val visibility = when (method.visibilityModifier) {
-        PRIVATE -> '-'
-        PUBLIC -> '+'
-        PROTECTED -> '#'
-        INTERNAL -> '~'
-    }
     val args = method.arguments.joinToString(separator = ", ") { "${it.name}: ${it.type}" }
-    "$visibility\t${method.name}($args): ${method.returnType}"
+    "${method.visibilityModifier.symbol}\t${method.name}($args): ${method.returnType}"
+}
+
+private val VisibilityModifier.symbol get() = when (this) {
+    PRIVATE -> '-'
+    PUBLIC -> '+'
+    PROTECTED -> '#'
+    INTERNAL -> '~'
 }
 
 private val Element.color: Color get() = when (this.type) {
