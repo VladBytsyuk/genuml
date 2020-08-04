@@ -1,5 +1,6 @@
 package com.vbytsyuk.genuml.ui.screens.editor
 
+import com.vbytsyuk.genuml.domain.Element
 import com.vbytsyuk.genuml.domain.Model
 import com.vbytsyuk.genuml.ui.onChange
 import com.vbytsyuk.genuml.ui.toObservableList
@@ -18,12 +19,12 @@ class CanvasView : View() {
 }
 
 class CanvasController : Controller() {
-    val elementsProperty = SimpleObjectProperty<List<String>>()
-    val elements: List<String> by elementsProperty
+    val elementsProperty = SimpleObjectProperty<List<Element>>()
+    val elements: List<Element> by elementsProperty
 
 
     fun renderModel(model: Model) = runAsync {
-        model.elements.map { "${it.name} [${it.type}]" }.toObservableList()
+        model.elements.toObservableList()
     } ui { elementsProperty.value = it }
 
     fun clear() = runAsync {
